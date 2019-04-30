@@ -1,5 +1,5 @@
 //change this to change length of game
-var gametime = 5; //this var is used in reset as well
+var gametime = 20; //this var is used in reset as well
 let timer = gametime; //seconds of timer
 var interval; //for counting down
 var startbutton, resetbutton; 
@@ -7,10 +7,13 @@ var start = false;
 var resetKey = false; //play again spacebar
 /*Eye Variables*/
 var e_x, e_y;
-const radius = 65;
-var score = 0; //fish collected
+const e_radius = 65;
+var score = 0;
 var eyeball;
+/*Medusa Variables*/
 let medusa;
+m_radius = 210;
+medmode = false;
 
 function preload() {
     eyeball = createImg('images/eyeball.png');
@@ -19,7 +22,6 @@ function preload() {
 function setup() {
     randomSeed(1864)
     createCanvas(windowWidth - 100, windowHeight - 100);
-    medusa.position(windowWidth/2-400,100);
     medusa.hide();
     //start button
 	startbutton = createButton("Start");
@@ -36,9 +38,15 @@ function setup() {
     resetbutton.mousePressed(startScreen);
     resetbutton.hide(); //hide for now
     frameRate(60)
-    //eye position
-    e_x = random(windowWidth-280);
+    //eye position not in deadzone
+    e_x = random(windowWidth - 280);
     e_y = random(windowHeight - 280);
+    var d = dist(e_x, e_y, (width / 2) + 10, 400);
+    while (d < (m_radius + 50)) {
+        e_x = random(windowWidth - 280);
+        e_y = random(windowHeight - 280);
+        d = dist(e_x, e_y, (width / 2) + 10, 400);
+    }
     interval = setInterval(decrementTimer, 1000);
 }
 function reset() {
@@ -46,6 +54,7 @@ function reset() {
     score = 0;
     startbutton.hide();
     start = true;
+    medmode = false;
     newEye();
     eyeball.show();
     medusa.show();
@@ -53,6 +62,12 @@ function reset() {
 }
 function draw() {
     background(25, 25, 25);
+    //medusa deadzone
+    noStroke();
+    noFill();
+    ellipse((width / 2) + 10, 400, m_radius, m_radius);
+    //medusa position
+    medusa.position(width / 2 - 450, 110);
     //Timer
     fill(150);
     textAlign(CENTER);
@@ -61,11 +76,11 @@ function draw() {
     textSize(30);
     text('Eyes Collected: ' + score, width / 2, height / 13.5);
     //eyeball position
-    eyeball.position(e_x-30, e_y-25);
+    eyeball.position(e_x-57, e_y-25);
     //invisible circle around eye
     noStroke();
     noFill();
-    ellipse(e_x+20, e_y, radius * 2, radius * 2);
+    ellipse(e_x, e_y, e_radius * 2, e_radius * 2);
     fill(255, 255, 255);
     textAlign(CENTER, CENTER);
     textStyle(NORMAL);
@@ -75,6 +90,9 @@ function draw() {
     if (timer == 0) {
         resetKey = true; 
         gameOver();
+    }
+    if (timer == gametime - 1) {
+        medmode = true;
     }
     if (!start) {
         eyeball.hide();
@@ -86,6 +104,7 @@ function draw() {
 function startScreen() {
     start = false;
     resetKey = false;
+    medmode = false;
     resetbutton.hide();
     fill(61, 61, 61);
     
@@ -99,6 +118,7 @@ function startScreen() {
     text('before the time runs out!', width / 2, height / 9 + 115);
     text('To collect points:', width / 2, height / 9 + 180);
     text('Click or gaze at the eyes', width / 2, height / 9 + 215);
+    text('(and avoid looking at Medusa)', width / 2, height / 9 + 250);
    
     startbutton.show();
 }
@@ -128,14 +148,27 @@ function decrementTimer() {
 function newEye() {
     e_x = random(windowWidth - 280);
     e_y = random(windowHeight - 280);
+    var d = dist(e_x, e_y, (width / 2) + 10, 400);
+    while (d < (m_radius + 50)) {
+        e_x = random(windowWidth - 280);
+        e_y = random(windowHeight - 280);
+        d = dist(e_x, e_y, (width / 2) + 10, 400);
+    }
 }
 
 //when the user clicks
 function mousePressed() {
     var d = dist(mouseX, mouseY, e_x, e_y)
-    if (d < radius) {
+    var d2 = dist(mouseX, mouseY,(width / 2)+10, 400)
+    if (d < e_radius) {
         newEye();
         score++;
+    }
+    if ((d2 < m_radius) && (medmode == true)) {
+        medmode = false;
+        //resetKey = true;
+        //gameOver();
+        timer = 0;
     }
 }
 
