@@ -22,8 +22,8 @@ var dx = 0;
 var dy = 0;
 
 function preload() {
-    eyeball = createImg('eyeball.png');
-    medusa = createImg('medusa.png');
+    eyeball = createImg('images/eyeball.png');
+    medusa = createImg('images/medusa.png');
 }
 function setup() {
     randomSeed(1864)
