@@ -8,6 +8,9 @@ Accessible Game project by Elizabeth Qiu and Vivian Tran
 Instructions to run:
 Open index.html in a browser and play the game with eye tracker/head mouse. 
 
+Demo with Camera Mouse: 
+https://youtu.be/LuWEUWx4nAk
+
 Rescource credits: 
 * Images
     * https://dumielauxepices.net/wallpaper-287009
