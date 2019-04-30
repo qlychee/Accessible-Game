@@ -9,9 +9,8 @@ var mobile = false; //display differently for phone
 /*Eye Variables*/
 var e_x, e_y;
 const radius = 65;
-var fishCollected = false;
 var score = 0; //fish collected
-var blobfish;
+var eyeball;
 let medusa;
 
 new p5()
@@ -23,8 +22,8 @@ var dx = 0;
 var dy = 0;
 
 function preload() {
-    blobfish = createImg('images/eyeball.png');
-    medusa = createImg('images/medusa.png');
+    eyeball = createImg('eyeball.png');
+    medusa = createImg('medusa.png');
 }
 function setup() {
     randomSeed(1864)
@@ -58,12 +57,12 @@ function reset() {
     startbutton.hide();
     start = true;
     newFish();
-    blobfish.show();
+    eyeball.show();
     medusa.show();
     loop();
 }
 function draw() {
-    background(98, 203, 219);
+    background(25, 25, 25);
     //Timer
     fill(150);
     textAlign(CENTER);
@@ -71,14 +70,14 @@ function draw() {
     fill(255, 255, 255);
     if(mobile){
         textSize(75)
-        text('Fish Collected: ' + score, width / 2, height / 20);
+        text('Eyes Collected: ' + score, width / 2, height / 20);
     }else{
         textSize(30);
-        text('Fish Collected: ' + score, width / 2, height / 13.5);
+        text('Eyes Collected: ' + score, width / 2, height / 13.5);
     }
     //fish
-    blobfish.position(e_x-30, e_y-25);
-    //invisible circle around fish
+    eyeball.position(e_x-30, e_y-25);
+    //invisible circle around eye
     noStroke();
     noFill();
     ellipse(e_x, e_y, radius * 2, radius * 2);
@@ -93,7 +92,7 @@ function draw() {
         gameOver();
     }
     if (!start) {
-        blobfish.hide();
+        eyeball.hide();
         //letter = '';
         startScreen();
     }
@@ -104,34 +103,33 @@ function startScreen() {
     start = false;
     resetKey = false;
     resetbutton.hide();
-    fill(50, 123, 163);
+    fill(61, 61, 61);
     
     rect( windowWidth/4-50, 0, windowWidth/2, windowHeight-100);
     fill(255, 255, 255);
     textSize(40);
-    text('Blobby Pop!', width / 2, height / 9);
+    text('Eye Gaze', width / 2, height / 9);
     textSize(35);
     text('Instructions:', width / 2, height / 9 + 50);
-    text('Collect blobfish before', width / 2, height / 9 + 85);
+    text('Gaze at as many eyes before', width / 2, height / 9 + 85);
     text('the time runs out!', width / 2, height / 9 + 115);
-    text('To collect blobfish:', width / 2, height / 9 + 180);
-    text('Click or press', width / 2, height / 9 + 215);
-    text('corresponding key', width / 2, height / 9 + 250);
-	
+    text('To collect points:', width / 2, height / 9 + 180);
+    text('Click or gaze at the eyes', width / 2, height / 9 + 215);
+   
     startbutton.show();
 }
 //game over and restart
 function gameOver() {
-    fill(50, 123, 163);
+    fill(61, 61, 61);
     rect( windowWidth/4-50, 0, windowWidth/2, windowHeight-100);
     fill(255, 255, 255);
     textSize(30)
     text("GAME OVER", width / 2, height/3);
     textSize(30);
     textAlign(CENTER);
-    text('Fish Collected: ' + score, width / 2, height/2);
+    text('Eyes Collected: ' + score, width / 2, height/2);
     medusa.hide();
-    blobfish.hide();
+    eyeball.hide();
     resetbutton.show()
     noLoop();
 }
