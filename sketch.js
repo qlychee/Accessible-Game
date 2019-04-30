@@ -111,7 +111,7 @@ function startScreen() {
     rect( windowWidth/4-50, 0, windowWidth/2, windowHeight-100);
     fill(255, 255, 255);
     textSize(40);
-    text('Eye Gaze', width / 2, height / 9);
+    text('Gorgon Gaze', width / 2, height / 9);
     textSize(35);
     text('Instructions:', width / 2, height / 9 + 50);
     text('Gaze at as many eyes you can', width / 2, height / 9 + 85);
