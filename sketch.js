@@ -1,25 +1,16 @@
 //change this to change length of game
-var gametime = 10; //this var is used in reset as well
+var gametime = 5; //this var is used in reset as well
 let timer = gametime; //seconds of timer
 var interval; //for counting down
 var startbutton, resetbutton; 
 var start = false;
 var resetKey = false; //play again spacebar
-var mobile = false; //display differently for phone
 /*Eye Variables*/
 var e_x, e_y;
 const radius = 65;
 var score = 0; //fish collected
 var eyeball;
 let medusa;
-
-new p5()
-// location restriction of target
-var x = 200;
-var y = 200;
-// changes in x, y
-var dx = 0;
-var dy = 0;
 
 function preload() {
     eyeball = createImg('images/eyeball.png');
@@ -28,7 +19,6 @@ function preload() {
 function setup() {
     randomSeed(1864)
     createCanvas(windowWidth - 100, windowHeight - 100);
-
     medusa.position(windowWidth/2-400,100);
     medusa.hide();
     //start button
@@ -40,13 +30,13 @@ function setup() {
     startbutton.hide(); //hide for now
     //reset button
     resetbutton = createButton("Play Again");
-    resetbutton.position(width / 2 -25, 5*height/6);
-    resetbutton.size(150, 50);
+    resetbutton.position((width / 2)-50, 5*height/7);
+    resetbutton.size(200, 100);
     resetbutton.style("font-size", "25px");	
     resetbutton.mousePressed(startScreen);
     resetbutton.hide(); //hide for now
     frameRate(60)
-
+    //eye position
     e_x = random(windowWidth-280);
     e_y = random(windowHeight - 280);
     interval = setInterval(decrementTimer, 1000);
@@ -56,7 +46,7 @@ function reset() {
     score = 0;
     startbutton.hide();
     start = true;
-    newFish();
+    newEye();
     eyeball.show();
     medusa.show();
     loop();
@@ -66,21 +56,16 @@ function draw() {
     //Timer
     fill(150);
     textAlign(CENTER);
-    //Fish collected 
+    //Eyes collected 
     fill(255, 255, 255);
-    if(mobile){
-        textSize(75)
-        text('Eyes Collected: ' + score, width / 2, height / 20);
-    }else{
-        textSize(30);
-        text('Eyes Collected: ' + score, width / 2, height / 13.5);
-    }
-    //fish
+    textSize(30);
+    text('Eyes Collected: ' + score, width / 2, height / 13.5);
+    //eyeball position
     eyeball.position(e_x-30, e_y-25);
     //invisible circle around eye
     noStroke();
     noFill();
-    ellipse(e_x, e_y, radius * 2, radius * 2);
+    ellipse(e_x+20, e_y, radius * 2, radius * 2);
     fill(255, 255, 255);
     textAlign(CENTER, CENTER);
     textStyle(NORMAL);
@@ -93,7 +78,6 @@ function draw() {
     }
     if (!start) {
         eyeball.hide();
-        //letter = '';
         startScreen();
     }
 
@@ -111,8 +95,8 @@ function startScreen() {
     text('Eye Gaze', width / 2, height / 9);
     textSize(35);
     text('Instructions:', width / 2, height / 9 + 50);
-    text('Gaze at as many eyes before', width / 2, height / 9 + 85);
-    text('the time runs out!', width / 2, height / 9 + 115);
+    text('Gaze at as many eyes you can', width / 2, height / 9 + 85);
+    text('before the time runs out!', width / 2, height / 9 + 115);
     text('To collect points:', width / 2, height / 9 + 180);
     text('Click or gaze at the eyes', width / 2, height / 9 + 215);
    
@@ -139,11 +123,6 @@ function decrementTimer() {
     if (timer > 0) {
         timer--;
     }
-}
-
-function update() {
-    x = x + dx
-    y = y + dy
 }
 
 function newEye() {
